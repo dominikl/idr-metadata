@@ -1,11 +1,11 @@
 # Delete all map annotations and re-apply
-export PATH=$PATH:/home/omero/OMERO.server/bin
+export PATH=$PATH:/home/omero/workspace/OMERO-server/OMERO.server/bin
 export IDR=../../
 
 set -e
 set -u
 
-omero -q login demo@localhost
+omero -q login root@localhost -w omero
 ARGS=$(sed "$1"'q;d' input)
 YML=$IDR/$(echo $ARGS | cut -f1 -d" ")
 CSV=${YML/bulkmap-config.yml/annotation.csv}
