@@ -1,6 +1,6 @@
 # Delete all map annotations and re-apply
 export PATH=$PATH:/home/omero/workspace/OMERO-server/OMERO.server/bin
-export IDR=../../
+export IDR=../..
 
 set -e
 set -u
@@ -11,8 +11,9 @@ YML=$IDR/$(echo $ARGS | cut -f1 -d" ")
 CSV=${YML/bulkmap-config.yml/annotation.csv}
 OBJID=$(echo $ARGS | cut -f2 -d" ")
 
-omero metadata populate --context deletemap $OBJID
-omero metadata populate --context deletemap --cfg $YML $OBJID
 
-omero metadata populate --file $CSV $OBJID
-omero metadata populate --context bulkmap --cfg $YML $OBJID
+omero metadata populate --context deletemap --batch 100 --wait 120 $OBJID
+omero metadata populate --context deletemap --batch 100 --wait 120 --cfg $YML $OBJID
+
+omero metadata populate --batch 1000 --file $CSV $OBJID
+omero metadata populate --batch 100 --context bulkmap --cfg $YML $OBJID
